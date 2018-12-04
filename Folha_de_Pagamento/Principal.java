@@ -1,6 +1,7 @@
 package Folha;
 
 import java.util.Scanner;
+import java.util.Stack;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -10,16 +11,30 @@ public class Principal {
 		ArrayList<Employees> myemployees = new ArrayList<Employees>();
 		ArrayList<NewCalendar> paymentschedules = new ArrayList<NewCalendar>();
 		
-		String first_entry,trash = null;
-		String name,address,type,paymentmethod,syndicate,continuen;
-		int id = 0, newhourlyverify = 0,positioninarray = -1;
+		Stack<Employees> undo1 = new Stack<Employees>();
+		Stack<Employees> redo1 = new Stack<Employees>();
+
+		
+		Undo_Redo NewUndo_Redo = new Undo_Redo();
+		NewUndo_Redo.setUndoStack(undo1);
+		NewUndo_Redo.setRedoStack(redo1);
+		
+		String first_entry = null,trash = null;
+		String name,address,type,paymentmethod,syndicate,continuen,previous_entry = null;
+		int previousday = 0,previousmonth = 0,previousyear = 0,previousdayofweek = 0;
+		int id = 0, newhourlyverify = 0,positioninarray = -1,lasthourly = 0,previousarrival = 0;
 		double salary = 0;
+		double sellresult = 0;
 		Calendar newCalendar = Calendar.getInstance();
 		int day = newCalendar.get(Calendar.DAY_OF_MONTH);
+		previousday = day;
 		int month = newCalendar.get(Calendar.MONTH);
 		month++;
+		previousmonth = month;
 		int year = newCalendar.get(Calendar.YEAR);
+		previousyear = year;
 		int dayofweek = newCalendar.get(Calendar.DAY_OF_WEEK);
+		previousdayofweek = dayofweek;
 		
 		//SetDefaultPaymentSchedules
 		NewCalendar SetDefault0 = new NewCalendar();
@@ -39,6 +54,8 @@ public class Principal {
 		
 			
 		while(true) {
+			
+			previous_entry = first_entry;
 			System.out.println("\nAdicionar Empregado(1)\n\nVisualizar Empregados(2)\n\nRemover Funcionario(3)\n\nLancar Cartao de Ponto(4)\n\nLancar Resultado de Venda(5)\n\nLancar uma Taxa de Servico(6)\n\nAlterar detalhes de um Empregado(7)\n\nRodar Folha de Pagamento(8)\n\nUndo/Redo(9)\n\nAgenda de Pagamento(10)\n\nNova Agenda de Pagamento(11)\n\nSair(0)\n");
 			first_entry = input.nextLine();
 			
@@ -95,7 +112,10 @@ public class Principal {
 					}
 				}
 				if(isemployee == 0) System.out.println("Nao encontrado.");
-				else NewCalendar.PaymentSchedule(myemployees,employeeindex);
+				else {
+					NewCalendar.PaymentSchedule(myemployees,employeeindex);
+					Undo_Redo.CreateToUndo_Redo(myemployees, employeeindex, undo1);
+				}
 				
 				System.out.println("Para continuar, pressione enter");
 				continuen = input.nextLine();
@@ -139,7 +159,7 @@ public class Principal {
 				}
 				else if(entry.equals("2")) {
 					for(int i = 0;i < myemployees.size();i++) {
-						System.out.println("Nome do Empregado: " + myemployees.get(i).getName() + ". Id do Empregado: " + myemployees.get(i).getEmployeeId());;
+						System.out.println("Nome do Empregado: " + myemployees.get(i).getName() + ". Id do Empregado: " + myemployees.get(i).getEmployeeId() + ". Salario do Empregado: " + myemployees.get(i).getSalary());
 					}
 				}
 				
@@ -156,6 +176,7 @@ public class Principal {
 				trash = input.nextLine();
 				for(int i = 0;i < myemployees.size();i++) {
 					if(myemployees.get(i).getEmployeeId() == removeid) {
+						Undo_Redo.CreateToUndo_Redo(myemployees, i, undo1);
 						myemployees.remove(i);
 						validate++;
 						System.out.println("Empregado removido com sucesso.");
@@ -177,6 +198,7 @@ public class Principal {
 				for(int i = 0;i < myemployees.size();i++) {
 					if(currentemployeeid == myemployees.get(i).getEmployeeId()) {
 						if(myemployees.get(i).getType().equals("horista")) {
+							lasthourly = i;
 							if(newhourlyverify == 0) {
 								Hourly newhourly = new Hourly();
 								newhourly.setArrivalTime(-1);
@@ -185,11 +207,13 @@ public class Principal {
 								myemployees.get(i).getPaymentDaily().add(newhourly);
 								newhourlyverify = 1;
 								positioninarray++;
+								Undo_Redo.CreateToUndo_Redo(myemployees, i, undo1);
 							}
 							if(newhourlyverify == 1){
 								if((myemployees.get(i).getPaymentDaily().get(positioninarray).getArrivalTime() == -1)) {
 									System.out.println("Informe a hora de chegada: ");
 									arrivaltime = input.nextInt();
+									previousarrival = arrivaltime;
 									trash = input.nextLine();
 									myemployees.get(i).getPaymentDaily().get(positioninarray).setArrivalTime(arrivaltime);
 									ishourly++;
@@ -201,6 +225,7 @@ public class Principal {
 									myemployees.get(i).getPaymentDaily().get(positioninarray).setExitTime(finaltime);
 									ishourly++;
 									newhourlyverify = 0;
+									Undo_Redo.CreateToUndo_Redo(myemployees, i, undo1);
 								}
 							}
 						}
@@ -213,7 +238,6 @@ public class Principal {
 			else if(first_entry.equals("5")) {
 				int currentemployeeid = 0,iscommisioned = 0;
 				String selldate;
-				double sellresult = 0;
 				System.out.println("Informe o Id de empregado: ");
 				currentemployeeid = input.nextInt();
 				trash = input.nextLine();
@@ -222,11 +246,13 @@ public class Principal {
 						if(myemployees.get(i).getType().equals("comissionado")) {
 							System.out.println("Informe a Data da Venda: ");
 							selldate = input.nextLine();
-							System.out.println("Informe o Valor da Venda: ");
+							System.out.println(selldate + "\nInforme o Valor da Venda: ");
 							sellresult = input.nextDouble();
 							trash = input.nextLine();
 							myemployees.get(i).setSells(sellresult);
 							iscommisioned++;
+							sellresult = 0;
+							Undo_Redo.CreateToUndo_Redo(myemployees, i, undo1);
 						}
 					}
 				}
@@ -251,6 +277,7 @@ public class Principal {
 							trash = input.nextLine();
 							myemployees.get(i).setSyndicateServiceTax(servicefee);
 							ispartofsyndicate++;
+							Undo_Redo.CreateToUndo_Redo(myemployees, i, undo1);
 						}
 					}
 				}
@@ -274,7 +301,10 @@ public class Principal {
 					}
 				}
 				if(isemployee == 0) System.out.println("Empregado nao existe");
-				else Edit_Employee.EditProfile(myemployees, input,employeeindex);
+				else {
+					Edit_Employee.EditProfile(myemployees, input,employeeindex);
+					Undo_Redo.CreateToUndo_Redo(myemployees, employeeindex, undo1);
+				}
 			}
 			
 			//Option 8
@@ -290,27 +320,38 @@ public class Principal {
 					else if(myemployees.get(i).getType().equals("comissionado")) {
 						NewSalary.CommisionedSalary(myemployees,i);
 					}
+					Undo_Redo.CreateToUndo_Redo(myemployees, i, undo1);
 				}
 				
 				NewCalendar.PassDay(myemployees,day,month,year,dayofweek);
 				day++;
+				previousday = day-1;
 				dayofweek++;
+				previousdayofweek = dayofweek-1;
 				if(dayofweek == 8) dayofweek = 1;
 				if(day == 29 && month == 2) {
 					day = 1;
+					previousday = 28;
 					month++;
+					previousmonth = month-1;
 				}
 				else if(day == 31 && (month == 4 || month == 6 || month == 9 || month == 11)) {
 					day = 1;
+					previousday = 30;
 					month++;
+					previousmonth = month-1;
 				}
 				else if(day == 32) {
 					day = 1;
+					previousday = 31;
 					month++;
+					previousmonth = month-1;
 				}
 				if(month == 13) {
 					month = 1;
+					previousmonth = 12;
 					year++;
+					previousyear = year-1;
 				}
 				
 				System.out.println("Para continuar, pressione enter");
@@ -320,7 +361,35 @@ public class Principal {
 			
 			//Option 9
 			else if(first_entry.equals("9")) {
-				
+				String option;
+				System.out.println("Undo ou Redo?");
+				option = input.nextLine();
+				if(option.equals("Undo")) {
+					if(previous_entry.equals("4")) {
+						if(myemployees.get(lasthourly).getPaymentDaily().get(positioninarray).getArrivalTime() != -1) {
+							myemployees.get(lasthourly).getPaymentDaily().get(positioninarray).setArrivalTime(-1);
+						}
+						
+					}
+					else if(previous_entry.equals("8")) {
+						day = previousday;
+						dayofweek = previousdayofweek;
+						month = previousmonth;
+						year = previousyear;
+					}
+					Undo_Redo.Undo(myemployees,undo1,redo1);
+				}
+				else if(option.equals("Redo")) {
+					newhourlyverify = 1;
+					if(myemployees.get(lasthourly).getPaymentDaily().get(positioninarray).getArrivalTime() == -1) {
+						myemployees.get(lasthourly).getPaymentDaily().get(positioninarray).setArrivalTime(previousarrival);
+					}
+					if(day == previousday) day++;
+					if(dayofweek == previousdayofweek) dayofweek++;
+					if(previousmonth != month) month++;
+					if(previousyear != year) year++;
+					Undo_Redo.Redo(myemployees,redo1,undo1);
+				}
 			}
 			
 			//Option 10

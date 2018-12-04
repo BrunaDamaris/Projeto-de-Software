@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Edit_Employee {
 	public static void EditProfile(ArrayList <Employees> myemployees,Scanner input,int employeeindex) {
-		String changes,entry,newname;
+		String changes,entry,newname,trash = null;
 		int ids;
 		
 		//Name
@@ -44,20 +44,28 @@ public class Edit_Employee {
 			if(changes.equals("horista")) {
 				System.out.println("Digite o salario por hora: ");
 				salary = input.nextDouble();
+				trash = input.nextLine();
+				myemployees.get(employeeindex).setPaymentSchedule("semanalmente");
 			}
 			else if(changes.equals("assalariado")) {
 				System.out.println("Digite o salario mensal: ");
 				salary = input.nextDouble();
+				trash = input.nextLine();
+				myemployees.get(employeeindex).setPaymentSchedule("mensalmente");
 			}
 			else if(changes.equals("comissionado")) {
 				System.out.println("Digite o salario quizenal: ");
 				salary = input.nextDouble();
+				trash = input.nextLine();
 				double commission;
 				System.out.println("Informe a comissao: ");
 				commission = input.nextDouble();
+				trash = input.nextLine();
 				myemployees.get(employeeindex).setComission(commission);
+				myemployees.get(employeeindex).setPaymentSchedule("bi-semanalmente");
 			}
 			myemployees.get(employeeindex).setSalary(salary);
+			NewCalendar.PaymentSchedule(myemployees, employeeindex);
 		}
 		
 		//Payment Method
@@ -120,8 +128,10 @@ public class Edit_Employee {
 			if(entry.equals("1")) {
 				System.out.println("Informe a nova Taxa de Sindicato: ");
 				newtax = input.nextDouble();
+				trash = input.nextLine();
 				myemployees.get(employeeindex).setSyndicateTax(newtax);
 			}
+			System.out.println(trash);
 		}
 	}
 }
