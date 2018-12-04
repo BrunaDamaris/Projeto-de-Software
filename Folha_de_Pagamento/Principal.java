@@ -20,7 +20,7 @@ public class Principal {
 		NewUndo_Redo.setRedoStack(redo1);
 		
 		String first_entry = null,trash = null;
-		String name,address,type,paymentmethod,syndicate,continuen,previous_entry = null;
+		String name,address,type,paymentmethod,syndicate,continuen,previous_entry = null, redo_entry = null;
 		int previousday = 0,previousmonth = 0,previousyear = 0,previousdayofweek = 0;
 		int id = 0, newhourlyverify = 0,positioninarray = -1,lasthourly = -1,previousarrival = 0;
 		double salary = 0;
@@ -365,6 +365,7 @@ public class Principal {
 				System.out.println("Undo ou Redo?");
 				option = input.nextLine();
 				if(option.equals("Undo")) {
+					redo_entry = previous_entry;
 					if(previous_entry.equals("4")) {
 						if(myemployees.get(lasthourly).getPaymentDaily().get(positioninarray).getArrivalTime() != -1) {
 							myemployees.get(lasthourly).getPaymentDaily().get(positioninarray).setArrivalTime(-1);
@@ -380,44 +381,47 @@ public class Principal {
 					Undo_Redo.Undo(myemployees,undo1,redo1);
 				}
 				else if(option.equals("Redo")) {
-					newhourlyverify = 1;
-					
-					if(lasthourly != -1) {
-						if(myemployees.get(lasthourly).getPaymentDaily().get(positioninarray).getArrivalTime() == -1) {
-							myemployees.get(lasthourly).getPaymentDaily().get(positioninarray).setArrivalTime(previousarrival);
+					if(redo_entry.equals("4")) {
+						newhourlyverify = 1;
+						if(lasthourly != -1) {
+							if(myemployees.get(lasthourly).getPaymentDaily().get(positioninarray).getArrivalTime() == -1) {
+								myemployees.get(lasthourly).getPaymentDaily().get(positioninarray).setArrivalTime(previousarrival);
+							}
+							lasthourly = -1;
 						}
-						lasthourly = -1;
+					}
+					if(redo_entry.equals("8")) {
+						day++;
+						previousday = day-1;
+						dayofweek++;
+						previousdayofweek = dayofweek-1;
+						if(dayofweek == 8) dayofweek = 1;
+						if(day == 29 && month == 2) {
+							day = 1;
+							previousday = 28;
+							month++;
+							previousmonth = month-1;
+						}
+						else if(day == 31 && (month == 4 || month == 6 || month == 9 || month == 11)) {
+							day = 1;
+							previousday = 30;
+							month++;
+							previousmonth = month-1;
+						}
+						else if(day == 32) {
+							day = 1;
+							previousday = 31;
+							month++;
+							previousmonth = month-1;
+						}
+						if(month == 13) {
+							month = 1;
+							previousmonth = 12;
+							year++;
+							previousyear = year-1;
+						}
 					}
 					
-					day++;
-					previousday = day-1;
-					dayofweek++;
-					previousdayofweek = dayofweek-1;
-					if(dayofweek == 8) dayofweek = 1;
-					if(day == 29 && month == 2) {
-						day = 1;
-						previousday = 28;
-						month++;
-						previousmonth = month-1;
-					}
-					else if(day == 31 && (month == 4 || month == 6 || month == 9 || month == 11)) {
-						day = 1;
-						previousday = 30;
-						month++;
-						previousmonth = month-1;
-					}
-					else if(day == 32) {
-						day = 1;
-						previousday = 31;
-						month++;
-						previousmonth = month-1;
-					}
-					if(month == 13) {
-						month = 1;
-						previousmonth = 12;
-						year++;
-						previousyear = year-1;
-					}
 					Undo_Redo.Redo(myemployees,redo1,undo1);
 				}
 			}
