@@ -84,7 +84,7 @@ public class Principal {
 											System.out.println("Status do Projeto: " + sortp.get(i).getStatus());
 											System.out.println("Descricao do Projeto: " + sortp.get(i).getDescription());
 											System.out.println("Objetivo do Projeto: " + sortp.get(i).getObjective());
-											System.out.println("Data de termino: " + "\nDia: " + sortp.get(i).getDayOfConclusion() + "\nMes do termino: " + sortp.get(i).getMonthOfConclusion() + "\nAno de termino: " + sortp.get(i).getYearOfConclusion());
+											System.out.println("Data de termino: " + "\nDia: " + sortp.get(i).getDayOfConclusion() + "\nMes de termino: " + sortp.get(i).getMonthOfConclusion() + "\nAno de termino: " + sortp.get(i).getYearOfConclusion());
 											System.out.println("--------------------------------------------------------");
 										}
 										sortp = contributor.get(currentindex).getMyProjects();
@@ -155,7 +155,7 @@ public class Principal {
 						System.out.println("Ano de inicio: ");
 						b_year = input.nextInt();
 						continuen = input.nextLine();
-						System.out.println("Informe a data de termino do projeto: ");
+						System.out.println("Informe a data prevista para termino do projeto: ");
 						System.out.println("Dia: ");
 						f_day = input.nextInt();
 						continuen = input.nextLine();
@@ -217,6 +217,7 @@ public class Principal {
 							for(int i = 0;i < project.size();i++) {
 								if(project.get(i).getTitle().equals(projectname)) {
 									approve = 1;
+									System.out.println("Sucesso");
 								}
 							}
 							if(approve == -1) System.out.println("Projeto nao encontrado");
@@ -520,11 +521,6 @@ public class Principal {
 								System.out.println("-Producao Academica: \n\nPublicacoes: ");
 								if(project.get(currentprojectindex).getProjectPublications().size() != 0) {
 									//Sort Publications
-									for(int i = 0;i < project.get(currentprojectindex).getProjectPublications().size();i++) {
-										System.out.println("Nome da Publicacao: " + project.get(currentprojectindex).getProjectPublications().get(i).getPublicationName());
-										System.out.println("Ano de Publicacao: " + project.get(currentprojectindex).getProjectPublications().get(i).getPublicationYear());
-									}
-									System.out.println("------------------------------------");
 									Projects.sortPublications(project.get(currentprojectindex).getProjectPublications());
 									for(int i = 0;i < project.get(currentprojectindex).getProjectPublications().size();i++) {
 										System.out.println("Nome da Publicacao: " + project.get(currentprojectindex).getProjectPublications().get(i).getPublicationName());
@@ -570,7 +566,7 @@ public class Principal {
 						continuen = input.nextLine();
 						if(publication.size() != 0) {
 							for(int i = 0;i < publication.size();i++){
-								if((publication.get(i).getPublicationName().equals(publicationname)) && (publication.get(i).getConferenceName().equals(publicationconference)) && (publication.get(i).getPublicationYear() == publicationyear)) {
+								if((publication.get(i).getPublicationName().equals(publicationname))) {
 									verifyexistence = -1;
 								}
 							}
