@@ -101,6 +101,7 @@ public class Principal {
 										}
 									}
 									else System.out.println("Nao faz ou fez parte de Publicacoes");
+									System.out.println("\nOrientacoes: ");
 									if(contributor.get(currentindex).getType().equals("Professor")) {
 										if(contributor.get(currentindex).getMyOrientation().size() != 0) {
 											for(int i = 0;i < contributor.get(currentindex).getMyOrientation().size();i++) {
@@ -189,7 +190,7 @@ public class Principal {
 								newmanageremail = input.nextLine();
 							}
 							else { 
-								System.out.println("Nao ha professores disponiveis.");
+								System.out.println("Nao ha professores disponiveis. Adicione professores ao laboratorio para criar projetos.");
 								break;
 							}
 						}
