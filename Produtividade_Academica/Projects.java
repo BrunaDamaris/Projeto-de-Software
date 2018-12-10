@@ -173,63 +173,9 @@ public class Projects {
 				if(sortp.get(j).getYearOfConclusion() > sortp.get(minp).getYearOfConclusion()) {
 					minp = j;
 				}
-				//First Swap - aux = (i);
 				auxiliarp = sortp.get(i);
 				sortp.set(i,sortp.get(minp));
 				sortp.set(minp,auxiliarp);
-				/*auxiliarp.setTitle(sortp.get(i).getTitle());
-				auxiliarp.setDayOfBeginning(sortp.get(i).getDayOfBeginning());
-				auxiliarp.setMonthOfBeginning(sortp.get(i).getMonthOfBeginning());
-				auxiliarp.setYearOfBeginning(sortp.get(i).getYearOfBeginning());
-				auxiliarp.setDayOfConclusion(sortp.get(i).getDayOfConclusion());
-				auxiliarp.setMonthOfConclusion(sortp.get(i).getMonthOfConclusion());
-				auxiliarp.setYearOfConclusion(sortp.get(i).getYearOfConclusion());
-				auxiliarp.setFinancier(sortp.get(i).getFinancier());
-				auxiliarp.setFinancierValue(sortp.get(i).getFinancierValue());
-				auxiliarp.setObjective(sortp.get(i).getObjective());
-				auxiliarp.setDescription(sortp.get(i).getDescription());
-				auxiliarp.setContributors(sortp.get(i).getProjectContributors());
-				auxiliarp.setStatus(sortp.get(i).getStatus());
-				auxiliarp.setProjectProfessor(sortp.get(i).getProjectProfessor());
-				auxiliarp.setProjectPublications(sortp.get(i).getProjectPublications());
-				auxiliarp.setProjectOrientation(sortp.get(i).getProjectOrientation());
-				auxiliarp.setProjectMentors(sortp.get(i).getProjectMentors());*;
-				//Second Swap - (i) = min;
-				sortp.get(i).setTitle(sortp.get(minp).getTitle());
-				sortp.get(i).setDayOfBeginning(sortp.get(minp).getDayOfBeginning());
-				sortp.get(i).setMonthOfBeginning(sortp.get(minp).getMonthOfBeginning());
-				sortp.get(i).setYearOfBeginning(sortp.get(minp).getYearOfBeginning());
-				sortp.get(i).setDayOfConclusion(sortp.get(minp).getDayOfConclusion());
-				sortp.get(i).setMonthOfConclusion(sortp.get(minp).getMonthOfConclusion());
-				sortp.get(i).setYearOfConclusion(sortp.get(minp).getYearOfConclusion());
-				sortp.get(i).setFinancier(sortp.get(minp).getFinancier());
-				sortp.get(i).setFinancierValue(sortp.get(minp).getFinancierValue());
-				sortp.get(i).setObjective(sortp.get(minp).getObjective());
-				sortp.get(i).setDescription(sortp.get(minp).getDescription());
-				sortp.get(i).setContributors(sortp.get(minp).getProjectContributors());
-				sortp.get(i).setStatus(sortp.get(minp).getStatus());
-				sortp.get(i).setProjectProfessor(sortp.get(minp).getProjectProfessor());
-				sortp.get(i).setProjectPublications(sortp.get(minp).getProjectPublications());
-				sortp.get(i).setProjectOrientation(sortp.get(minp).getProjectOrientation());
-				sortp.get(i).setProjectMentors(sortp.get(minp).getProjectMentors());
-				//Last Swap - min = aux
-				sortp.get(minp).setTitle(auxiliarp.getTitle());
-				sortp.get(minp).setDayOfBeginning(auxiliarp.getDayOfBeginning());
-				sortp.get(minp).setMonthOfBeginning(auxiliarp.getMonthOfBeginning());
-				sortp.get(minp).setYearOfBeginning(auxiliarp.getYearOfBeginning());
-				sortp.get(minp).setDayOfConclusion(auxiliarp.getDayOfConclusion());
-				sortp.get(minp).setMonthOfConclusion(auxiliarp.getMonthOfConclusion());
-				sortp.get(minp).setYearOfConclusion(auxiliarp.getYearOfConclusion());
-				sortp.get(minp).setFinancier(auxiliarp.getFinancier());
-				sortp.get(minp).setFinancierValue(auxiliarp.getFinancierValue());
-				sortp.get(minp).setObjective(auxiliarp.getObjective());
-				sortp.get(minp).setDescription(auxiliarp.getDescription());
-				sortp.get(minp).setContributors(auxiliarp.getProjectContributors());
-				sortp.get(minp).setStatus(auxiliarp.getStatus());
-				sortp.get(minp).setProjectProfessor(auxiliarp.getProjectProfessor());
-				sortp.get(minp).setProjectPublications(auxiliarp.getProjectPublications());
-				sortp.get(minp).setProjectOrientation(auxiliarp.getProjectOrientation());
-				sortp.get(minp).setProjectMentors(auxiliarp.getProjectMentors());*/
 			}
 		}
 		for(i = 0;i < sizep;i++) {
@@ -279,24 +225,6 @@ public class Projects {
 				auxiliar = sort.get(i);
 				sort.set(i,sort.get(min));
 				sort.set(min,auxiliar);
-				/*//First Swap - aux = (i);
-				auxiliar.setAssociatedProject(sort.get(i).getAssociatedProject());
-				auxiliar.setAuthors(sort.get(i).getAuthors());
-				auxiliar.setConferenceName(sort.get(i).getConferenceName());
-				auxiliar.setPublicationName(sort.get(i).getPublicationName());
-				auxiliar.setPublicationYear(sort.get(i).getPublicationYear());
-				//Second Swap - (i) = min;
-				sort.get(i).setAuthors(sort.get(min).getAuthors());
-				sort.get(i).setAssociatedProject(sort.get(min).getAssociatedProject());
-				sort.get(i).setConferenceName(sort.get(min).getConferenceName());
-				sort.get(i).setPublicationName(sort.get(min).getPublicationName());
-				sort.get(i).setPublicationYear(sort.get(min).getPublicationYear());
-				//Last Swap - min = aux
-				sort.get(min).setAuthors(auxiliar.getAuthors());
-				sort.get(min).setAssociatedProject(auxiliar.getAssociatedProject());
-				sort.get(min).setConferenceName(auxiliar.getConferenceName());
-				sort.get(min).setPublicationName(auxiliar.getPublicationName());
-				sort.get(min).setPublicationYear(auxiliar.getPublicationYear());*/
 			}
 		}
 	}
